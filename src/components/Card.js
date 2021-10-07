@@ -4,11 +4,14 @@ import React from "react"
 function Card({pieceTitle, artist, id, webImage, altProp}) {
 
     return (
-        <div>
-            <p>Title: {pieceTitle}</p>
-            <p>Artist: {artist}</p>
-            <p>id: {id}</p>
-            <img src={webImage} alt={altProp} width="20%" height="20%"></img>
+        <div className='card'>
+            <div className='card-text-container'>
+                <p>{pieceTitle},</p>
+                <p>{artist}</p>
+            </div>
+            <div className='card-img-container'>
+                <img className='card-img' src={webImage} alt={altProp}></img>
+            </div>
         </div>
     )
 }

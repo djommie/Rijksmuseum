@@ -22,7 +22,7 @@ function CardContainer( props ) {
     }
 
     return (
-        <div>
+        <div className='card-container'>
             {pieceList}
         </div>
     )

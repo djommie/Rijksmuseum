@@ -3,9 +3,9 @@ import '../styles/Search.css'
 import axios from 'axios'
 import CardContainer from './CardContainer'
 import PageButtons from './PageButtons'
-import Loader from './loader.gif'
+import SearchBar from './SearchBar'
 
-class Search extends React.Component {
+class App extends React.Component {
 
     constructor(props) {
         super(props)
@@ -100,23 +100,13 @@ class Search extends React.Component {
         const showNextBtn = totalPages > currentPageNr
 
         return (
-            <div className='search-container'>
-                <h2 className='search-heading'>Search</h2>
-                <label className='search-label' htmlFor='search-input'>
-                    <input 
-                        type='text'
-                        value={query}
-                        name='query'
-                        id='search-input'
-                        placeholder='Search...'
-                        onChange={this.handleInputChange}
-                    />
-                    <i className="fas fa-search search-icon"/>
-                </label>
-
-                { message && <p className='message'>{message}</p>}
-
-                <img src={Loader} className={`search-loading ${ loading ? 'show' : 'hide'}`}  alt='loader'/>
+            <div className='page-container'>
+                <SearchBar 
+                    query={query}
+                    loading={loading}
+                    message={message}
+                    handleInputChange={this.handleInputChange}
+                />
             	<PageButtons 
                     loading={this.state.loading}
                     showPrevBtn={showPrevBtn}
@@ -139,4 +129,4 @@ class Search extends React.Component {
     }
 }
 
-export default Search
+export default App

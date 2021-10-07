@@ -6,6 +6,7 @@ function PageButtons (props) {
             <button
                 className={
                     `nav-button 
+                    prev-button
                     ${props.showPrevBtn ? 'show' : 'hide'}
                     ${props.loading ? 'greyed-out' : ''}
                     `}
@@ -15,7 +16,8 @@ function PageButtons (props) {
             </button>
             <button
                 className={
-                    `nav-button 
+                    `nav-button
+                    next-button
                     ${props.showNextBtn ? 'show' : 'hide'}
                     ${props.loading ? 'greyed-out' : ''}
                     `}
