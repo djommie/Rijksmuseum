@@ -7,13 +7,15 @@ function CardContainer( props ) {
     let pieceList = ''
 
     if (Object.keys(props.state.results).length && props.state.results.length){
-        pieceList = props.state.results.map((piece) => {
+        pieceList = props.state.results.map((piece, index) => {
                return (
                    <Card 
-                       pieceTitle={piece.title}
-                       artist={piece.principalOrFirstMaker}
-                       id={piece.id}
-                       webImage={piece.webImage.url}
+                        key={index}
+                        pieceTitle={piece.title}
+                        artist={piece.principalOrFirstMaker}
+                        id={piece.id}
+                        webImage={piece.webImage.url}
+                        altProp={`${piece.title}-image`}
                    />
                )
            })
