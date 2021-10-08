@@ -1,9 +1,11 @@
 import React from 'react'
 import '../styles/Search.css'
 import axios from 'axios'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import CardContainer from './CardContainer'
 import PageButtons from './PageButtons'
 import SearchBar from './SearchBar'
+import PieceDetails from './PieceDetails'
 
 class App extends React.Component {
 
@@ -18,6 +20,7 @@ class App extends React.Component {
             totalResults: 0,
             totalPages: 0,
             currentPageNr: 0,
+            pieceSwitchList: ''
         }
 
         this.cancel = ''
@@ -50,13 +53,15 @@ class App extends React.Component {
             const resultNotFoundMsg = ! res.data.count
                                     ? 'There are no search results, please try another search.'
                                     : ''
+            const pieceSwitchList = this.getPieceSwitchList(res.data.artObjects)
             this.setState({
                 results: res.data.artObjects,
                 message: resultNotFoundMsg,
                 totalResults: total,
                 totalPages: totalPagesCount,
                 currentPageNr: updatedPageNr,
-                loading: false
+                loading: false,
+                pieceSwitchList: pieceSwitchList
             })
         })
         .catch(error => {
@@ -93,38 +98,61 @@ class App extends React.Component {
         }
     }
 
+    getPieceSwitchList = (results) => {
+        const pieceSwitchList = results.map((result, index) =>{
+            return(
+                <Route path={`/${result.id}`}>
+                    <PieceDetails 
+                        id={result.id}
+                        title={result.title}
+                        key={index}
+                    />
+                </Route>
+            )
+        })
+        return pieceSwitchList
+    }
+
     render() {
-        const { query, loading, message, currentPageNr, totalPages } = this.state
+        const { query, loading, message, currentPageNr, totalPages, pieceSwitchList } = this.state
 
         const showPrevBtn = currentPageNr > 1
         const showNextBtn = totalPages > currentPageNr
 
         return (
-            <div className='page-container'>
-                <SearchBar 
-                    query={query}
-                    loading={loading}
-                    message={message}
-                    handleInputChange={this.handleInputChange}
-                />
-            	<PageButtons 
-                    loading={this.state.loading}
-                    showPrevBtn={showPrevBtn}
-                    showNextBtn={showNextBtn}
-                    handlePrevClick={(event) => this.handlePageClick('prev', event)}
-                    handleNextClick={(event) => this.handlePageClick('next', event)}
-                />
-                <CardContainer 
-                    state={this.state}
-                />
-            	<PageButtons 
-                    loading={this.state.loading}
-                    showPrevBtn={showPrevBtn}
-                    showNextBtn={showNextBtn}
-                    handlePrevClick={(event) => this.handlePageClick('prev', event)}
-                    handleNextClick={(event) => this.handlePageClick('next', event)}
-                />
-            </div>
+            < Router >
+                <div className='page-container'>
+                    <Switch>
+                        {pieceSwitchList}
+                        <Route path='/'>
+                            <SearchBar 
+                                query={query}
+                                loading={loading}
+                                message={message}
+                                handleInputChange={this.handleInputChange}
+                            />
+                    	    <PageButtons 
+                                loading={this.state.loading}
+                                showPrevBtn={showPrevBtn}
+                                showNextBtn={showNextBtn}
+                                handlePrevClick={(event) => this.handlePageClick('prev', event)}
+                                handleNextClick={(event) => this.handlePageClick('next', event)}
+                            />
+                            <CardContainer 
+                                state={this.state}
+                            />
+                    	    <PageButtons 
+                                loading={this.state.loading}
+                                showPrevBtn={showPrevBtn}
+                                showNextBtn={showNextBtn}
+                                handlePrevClick={(event) => this.handlePageClick('prev', event)}
+                                handleNextClick={(event) => this.handlePageClick('next', event)}
+                            />
+                        </Route>
+                    </Switch>
+                </div>
+                
+            </Router>
         )
     }
 }
