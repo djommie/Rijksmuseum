@@ -13,7 +13,7 @@ function CardContainer( props ) {
                         key={index}
                         pieceTitle={piece.title}
                         artist={piece.principalOrFirstMaker}
-                        id={piece.id}
+                        objectNumber={piece.objectNumber}
                         webImage={piece.webImage.url}
                         altProp={`${piece.title}-image`}
                    />

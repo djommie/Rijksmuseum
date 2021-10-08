@@ -101,10 +101,10 @@ class App extends React.Component {
     getPieceSwitchList = (results) => {
         const pieceSwitchList = results.map((result, index) =>{
             return(
-                <Route path={`/${result.id}`}>
+                <Route path={`/${result.objectNumber}`}>
                     <PieceDetails 
-                        id={result.id}
-                        title={result.title}
+                        objectNumber={result.objectNumber}
+                        webImageUrl={result.webImage.url}
                         key={index}
                     />
                 </Route>

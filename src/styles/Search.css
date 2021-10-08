@@ -2,7 +2,7 @@
 .page-container {
     margin: 36px auto;
     width: 100%;
-    max-width: 800px; 
+    max-width: 1200px; 
 }
 
 .page-container input {
@@ -16,7 +16,7 @@
 
 .card-container {
     display: grid;
-    grid-template-columns: 400px 400px;
+    grid-template-columns: 400px 400px 400px;
 }
 
 .card {
@@ -79,6 +79,21 @@
 
 .next-button{
     float: right;
+}
+
+/*Piece details styles*/
+
+.piecedetails-img-container {
+    width: 800px; 
+    height: 800px;
+}
+
+.piecedetails-img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    height: 100%;
 }
 
 /*Show, hide & greyed out*/
