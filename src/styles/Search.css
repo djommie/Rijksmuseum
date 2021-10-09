@@ -2,54 +2,129 @@
 .page-container {
     margin: 36px auto;
     width: 100%;
-    max-width: 1200px; 
+    max-width: 1200px;
+    display: grid;
+    grid-template-rows: 100px auto auto auto auto 250px;
+    grid-template-columns: auto;
+    grid-template-areas: 
+        "header"
+        "search"
+        "next-prev"
+        "content"
+        "nextprev"
+        "footer";
 }
 
 .page-container input {
     width: 100%;
-    padding: 16px;
-    font-size: 30px;
+    padding: 10px;
+    font-size: 26px;
     font-style: italic;
     box-sizing: border-box;
     outline: none;
 }
 
+/*footer styles*/
+
+.footer {
+    grid-area: footer;
+    background-color: black;
+    color: white;
+    height: 250px;
+}
+
+.footer-text-container {
+    width: 400px;
+    padding: 40px;
+}
+
+.footer-info {
+    list-style: none;
+    position: absolute;
+}
+
+.footer-info li {
+    margin: 10px;
+    padding-bottom: .25em;
+    text-decoration: none;
+    transition-duration: 0.7s;
+}
+
+.footer-info li:hover {
+    border-bottom: 1px solid #453886;
+    cursor: pointer;
+}
+
+/*card styles*/
+
 .card-container {
+    grid-area: content;
+    max-width: 1200px;
     display: grid;
-    grid-template-columns: 400px 400px 400px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: repeat(1fr);
+    column-gap: 8px;
+    row-gap: 8px;
 }
 
 .card {
-    width: 400px;
-    height: 200px
+    color: black;
+    height: 250px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    transition: all .2s;
 }
 
-.card-img-container:nth-child(4n+2) {
-    float: left;
-    width: 200px; 
-    height: 200px;
+.card:hover{
+    box-shadow: 2px 1px 15px 10px #999;
+    transform: translateY(-1px);
+}
+
+.card:hover h4{
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift .3s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%23453886' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+    background-position: bottom;
+    background-repeat: repeat-x;
+    background-size: 10%;
+    border-bottom: 0;
+    padding-bottom: .3em;
+    text-decoration: none;
 }
 
 .card-img-container {
     float: right;
-    width: 200px; 
-    height: 200px;
 }
 
 .card img {
+    object-fit:cover;
     display: block;
     margin-left: auto;
     margin-right: auto;
     width: 100%;
     height: 100%;
+    max-height: 250px;
 }
 
 .card-text-container {
-    float: left;
-    width: 200px; 
-    height: 200px;
+    position: relative;
     overflow-wrap: break-word;
+    text-align: center;
+    margin: 5px;
 }
+
+.card-details-btn{
+    position: absolute;
+    text-align: center;
+    bottom: 15px;
+    width: 100%;
+}
+
+/*Routeplanner styles*/
+
+.routeplanner-container{
+    grid-area: content;
+}
+
+/*Search bar styles*/
 
 .search-heading{
     font-size: 30px;
@@ -59,6 +134,7 @@
 }
 
 .search-label {
+    grid-area: search;
     position: relative;
 }
 
@@ -72,9 +148,53 @@
 
 .search-loading{
     position: relative;
-    left: 0;
-    right: 0;
-    margin: auto;
+    width:100%;
+}
+
+/*navbar styles*/
+
+.navbar {
+    grid-area: header;}
+
+.home-logo {
+    object-fit: contain;
+    height: 100% 
+}
+
+.routeplanner-link{
+    float: right;
+    margin-right: 20px;
+    height: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.routeplanner-link p{
+    margin-top: 35px;
+
+}
+
+/*next & prev button styles*/
+
+.page-buttons-container {
+    height:40px;
+    background-color: black;
+}
+
+.nav-button {
+    width: 80px;
+    height: 40px;
+    background-color: black;
+    color: white;
+    transition-duration: 0.4s;
+    border-style: none;
+}
+
+
+.nav-button:hover {
+    background-color: white;
+    color: black;
+    border: 2px solid #e7e7e7;
 }
 
 .next-button{
@@ -83,9 +203,28 @@
 
 /*Piece details styles*/
 
+.piecedetails-container {
+    grid-area: content;
+    background-color: lightgrey;
+}
+
+.piecedetails-text-container {
+    overflow:hidden;
+    /* max-width: 400px;
+    max-height: 800px; */
+    overflow-wrap: break-word;
+}
+
+.piecedetails-title {
+    margin: 0;
+    padding: 0;
+    padding-left:10px;
+    height:50px;
+}
+
 .piecedetails-img-container {
-    width: 800px; 
-    height: 800px;
+    float: left;
+    max-width: 800px; 
 }
 
 .piecedetails-img {

@@ -2,7 +2,7 @@ import React from 'react'
 
 function PageButtons (props) {
     return(
-        <div className='page-buttons-container'>
+        <div className={`page-buttons-container ${props.showNextBtn || props.showPrevBtn ? '' : 'hide'}`}>
             <button
                 className={
                     `nav-button 
@@ -12,7 +12,7 @@ function PageButtons (props) {
                     `}
                 onClick={props.handlePrevClick}
             >
-                Prev
+                &lt;
             </button>
             <button
                 className={
@@ -23,7 +23,7 @@ function PageButtons (props) {
                     `}
                 onClick={props.handleNextClick}
             >
-                Next
+            &gt;
             </button>
         </div>
     )

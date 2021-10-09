@@ -1,11 +1,10 @@
 import React from "react"
-import Loader from './loader.gif'
+import Loader from './images/loader.gif'
 
 function SearchBar({query, loading, message, handleInputChange}) {
 
     return (
         <div className='search-container'>
-            <h2 className='search-heading'>Find your favorite artwork!</h2>
                 <label className='search-label' htmlFor='search-input'>
                     <input 
                         type='text'

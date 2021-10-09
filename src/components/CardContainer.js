@@ -11,8 +11,7 @@ function CardContainer( props ) {
                return (
                    <Card 
                         key={index}
-                        pieceTitle={piece.title}
-                        artist={piece.principalOrFirstMaker}
+                        pieceTitle={piece.longTitle}
                         objectNumber={piece.objectNumber}
                         webImage={piece.webImage.url}
                         altProp={`${piece.title}-image`}

@@ -2,10 +2,14 @@ import React from 'react'
 import '../styles/Search.css'
 import axios from 'axios'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+
+import NavBar from './NavBar'
+import Footer from './Footer'
 import CardContainer from './CardContainer'
 import PageButtons from './PageButtons'
 import SearchBar from './SearchBar'
 import PieceDetails from './PieceDetails'
+import RoutePlanner from './RoutePlanner'
 
 class App extends React.Component {
 
@@ -20,23 +24,19 @@ class App extends React.Component {
             totalResults: 0,
             totalPages: 0,
             currentPageNr: 0,
-            pieceSwitchList: ''
+            pieceSwitchList: '',
+            viewPieces: [],
+            viewPiecesIds: []
         }
 
         this.cancel = ''
         this.handlePageClick = this.handlePageClick.bind(this)
     }
-
-    getPageCount = (total, denom) => {
-        const divisable = 0 === total % denom
-        const toBeAdded = divisable ? 0 : 1
-        return Math.floor(total/denom) + toBeAdded
-    }
     
     fetchSearchResults = (updatedPageNr, query) => {
         const API_KEY = 'zZD0atBG'
         const pageNr = updatedPageNr ? `&p=${updatedPageNr}` : ''
-        const APIUrl = `https://www.rijksmuseum.nl/api/nl/collection?key=${API_KEY}&imgonly=True&q=${query}${pageNr}`
+        const APIUrl = `https://www.rijksmuseum.nl/api/nl/collection?key=${API_KEY}&imgonly=True&ps=30&q=${query}${pageNr}`
 
         if (this.cancel) {
             this.cancel.cancel()
@@ -49,7 +49,7 @@ class App extends React.Component {
         })
         .then( res => {
             const total = res.data.count
-            const totalPagesCount = this.getPageCount(total, 10)
+            const totalPagesCount = this.getPageCount(total, 30)
             const resultNotFoundMsg = ! res.data.count
                                     ? 'There are no search results, please try another search.'
                                     : ''
@@ -98,19 +98,56 @@ class App extends React.Component {
         }
     }
 
+    getPageCount = (total, denom) => {
+        const divisable = 0 === total % denom
+        const toBeAdded = divisable ? 0 : 1
+        return Math.floor(total/denom) + toBeAdded
+    }
+
     getPieceSwitchList = (results) => {
         const pieceSwitchList = results.map((result, index) =>{
             return(
                 <Route path={`/${result.objectNumber}`}>
                     <PieceDetails 
                         objectNumber={result.objectNumber}
-                        webImageUrl={result.webImage.url}
+                        webImageUrl={result.webImage.url}                
+                        addPieceToView={this.addPieceToView}
                         key={index}
                     />
                 </Route>
             )
         })
         return pieceSwitchList
+    }
+
+    addPieceToView = (id, longTitle, location) => {
+        if (! this.state.viewPiecesIds.includes(id)){
+            this.setState(prevState => {
+                const updatedViewPieces = prevState.viewPieces.concat({
+                    id,
+                    longTitle,
+                    location,
+                    })
+                const updatedViewPiecesIds = prevState.viewPiecesIds.concat(id)
+                    return {
+                        viewPieces: updatedViewPieces,
+                        viewPiecesIds: updatedViewPiecesIds
+                    }
+            })
+        }else{
+            alert('Dit stuk is al toegevoegd aan de route!')
+        }
+    }
+
+    removePieceFromView = (id) => {
+        this.setState(prevState => {
+            let updatedViewPieces = prevState.viewPieces.filter(viewPiece => viewPiece.id !== id)
+            let updatedViewPiecesIds = prevState.viewPiecesIds.filter(viewPieceId => viewPieceId !== id)
+            return {
+                viewPieces: updatedViewPieces,
+                viewPiecesIds: updatedViewPiecesIds
+            }
+        })
     }
 
     render() {
@@ -122,15 +159,22 @@ class App extends React.Component {
         return (
             < Router >
                 <div className='page-container'>
-                    <Switch>
-                        {pieceSwitchList}
-                        <Route path='/'>
-                            <SearchBar 
+                    <NavBar />
+                    <SearchBar 
                                 query={query}
                                 loading={loading}
                                 message={message}
                                 handleInputChange={this.handleInputChange}
                             />
+                    <Switch>
+                        {pieceSwitchList}
+                        <Route path='/route-planner'>
+                            <RoutePlanner 
+                                viewPieces={this.state.viewPieces}
+                                removePieceFromView={this.removePieceFromView}
+                            />
+                        </Route>
+                        <Route path='/'>
                     	    <PageButtons 
                                 loading={this.state.loading}
                                 showPrevBtn={showPrevBtn}
@@ -150,6 +194,7 @@ class App extends React.Component {
                             />
                         </Route>
                     </Switch>
+                    <Footer />
                 </div>
                 
             </Router>
