@@ -1,5 +1,5 @@
 import React from 'react'
-import '../styles/Search.css'
+import '../styles/style.css'
 import axios from 'axios'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
@@ -120,13 +120,22 @@ class App extends React.Component {
         return pieceSwitchList
     }
 
+    createSortable = (location) => {
+        const sliced = location.slice(3)
+        const sortable = sliced.split('.')
+        const sortables = sortable.map(item => parseInt(item))
+        return sortables
+      }
+
     addPieceToView = (id, longTitle, location) => {
         if (! this.state.viewPiecesIds.includes(id)){
+            const sortables = this.createSortable(location)
             this.setState(prevState => {
                 const updatedViewPieces = prevState.viewPieces.concat({
                     id,
                     longTitle,
                     location,
+                    sortables,
                     })
                 const updatedViewPiecesIds = prevState.viewPiecesIds.concat(id)
                     return {
@@ -150,6 +159,7 @@ class App extends React.Component {
         })
     }
 
+
     render() {
         const { query, loading, message, currentPageNr, totalPages, pieceSwitchList } = this.state
 
@@ -160,12 +170,6 @@ class App extends React.Component {
             < Router >
                 <div className='page-container'>
                     <NavBar />
-                    <SearchBar 
-                                query={query}
-                                loading={loading}
-                                message={message}
-                                handleInputChange={this.handleInputChange}
-                            />
                     <Switch>
                         {pieceSwitchList}
                         <Route path='/route-planner'>
@@ -175,6 +179,12 @@ class App extends React.Component {
                             />
                         </Route>
                         <Route path='/'>
+                            <SearchBar 
+                                query={query}
+                                loading={loading}
+                                message={message}
+                                handleInputChange={this.handleInputChange}
+                            />
                     	    <PageButtons 
                                 loading={this.state.loading}
                                 showPrevBtn={showPrevBtn}

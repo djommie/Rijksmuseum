@@ -7,24 +7,25 @@ function PieceDetails({ objectNumber, webImageUrl, addPieceToView}) {
     const detailsApi = `https://www.rijksmuseum.nl/api/nl/collection/${objectNumber}?key=${API_KEY}`
     
     const [data, setData] = useState([])
-
-    async function getData() {
-        try{
-            const response = await fetch(detailsApi)
-            const rawData = await response.json()
-            const data = rawData.artObject 
-
-            setData(data)
-        }catch(error){
-            console.log(error)
-        }
-    }
     
-    useEffect(() => getData(), [])
+    
+    useEffect(() => {
+        async function getData() {
+            try{
+                const response = await fetch(detailsApi)
+                const rawData = await response.json()
+                const data = rawData.artObject 
+
+                setData(data)
+            }catch(error){
+                console.log(error)
+            }
+        }
+        getData()
+    }, [])
 
     const {
         id,
-        principalOrFirstMaker,
         longTitle, 
         title, 
         plaqueDescriptionDutch, 
@@ -33,29 +34,44 @@ function PieceDetails({ objectNumber, webImageUrl, addPieceToView}) {
         productionPlaces, 
         location } = data
 
+        console.log([] ? 'true' : 'false')
+
     return (
         <div className='piecedetails-container'>
             <h2 className='piecedetails-title'>{longTitle}</h2>
             <div className='piecedetails-img-container'>
-                <a href={webImageUrl} target='_blank'>
-                    <img className='piecedetails-img' src={webImageUrl} alt={`${title}-image`}></img>
+                <a href={webImageUrl} target='_blank' rel='noreferrer'>
+                    <img className='piecedetails-img' src={webImageUrl} alt={title}></img>
                 </a>
             </div>
             <div className='piecedetails-text-container'>
-                <p>{plaqueDescriptionDutch}</p>
-                <ul>{materials ? 
-                                materials.map(material => {
+                <p className='piecedetails-plaque'>{plaqueDescriptionDutch}</p>
+
+                <dl className='piecedetails-materials'>
+                    {materials[0] ? <dt>materialen gebruikt voor dit stuk</dt> : ''}
+                    {materials ? materials.map(material => {
                                     return(
-                                        <li>{material}</li>
+                                        <dd>{material}</dd>
                                     )
                                 })
                                 : ''    
                             }
-                </ul>
-                <p>{techniques}</p>
-                <p>{productionPlaces}</p>
-                <p>{location ? `Te zien: ${location}` : 'Currently not on display'}</p>
-                {location ? <button onClick={() => addPieceToView(id, longTitle, location)}>Add Piece</button> : ''}
+                </dl>
+
+                <dl className='piecedetails-techniques'>
+                    {techniques[0] ? <dt>Technieken gebruikt bij dit stuk</dt> : ''}
+                    {techniques ? techniques.map(technique => {
+                                    return(
+                                        <dd>{technique}</dd>
+                                    )
+                                })
+                                : ''    
+                            }
+                </dl>
+
+                <p className='piecedetails-places'>{productionPlaces[0] ? `Dit stuk is gemaakt in ${productionPlaces}` : ''}</p>
+                <p className='piecedetails-location'>{location ? `Dit stuk is momenteel te zien op  ${location}` : 'Staat momenteel niet ten toon'}</p>
+                {location ? <button className='piecedetails-add-btn' onClick={() => addPieceToView(id, longTitle, location)}>Add Piece</button> : ''}
                 
             </div>
         </div>

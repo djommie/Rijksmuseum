@@ -1,10 +1,10 @@
 import React from "react"
 import Card from "./Card"
-
+import Home from "./Home"
 
 function CardContainer( props ) {
 
-    let pieceList = ''
+    let pieceList = <Home />
 
     if (Object.keys(props.state.results).length && props.state.results.length){
         pieceList = props.state.results.map((piece, index) => {
