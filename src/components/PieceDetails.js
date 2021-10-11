@@ -8,7 +8,7 @@ function PieceDetails({ objectNumber, webImageUrl, addPieceToView}) {
     
     const [data, setData] = useState([])
     
-    
+    // Uses its own state, gets detailed data from the API based on objectNumber received from props
     useEffect(() => {
         async function getData() {
             try{
@@ -34,7 +34,6 @@ function PieceDetails({ objectNumber, webImageUrl, addPieceToView}) {
         productionPlaces, 
         location } = data
 
-        console.log([] ? 'true' : 'false')
 
     return (
         <div className='piecedetails-container'>
@@ -48,7 +47,7 @@ function PieceDetails({ objectNumber, webImageUrl, addPieceToView}) {
                 <p className='piecedetails-plaque'>{plaqueDescriptionDutch}</p>
 
                 <dl className='piecedetails-materials'>
-                    {materials[0] ? <dt>materialen gebruikt voor dit stuk</dt> : ''}
+                    {typeof materials !== 'undefined' && materials.length > 0 ? <dt>materialen gebruikt voor dit stuk</dt> : ''}
                     {materials ? materials.map(material => {
                                     return(
                                         <dd>{material}</dd>
@@ -59,7 +58,7 @@ function PieceDetails({ objectNumber, webImageUrl, addPieceToView}) {
                 </dl>
 
                 <dl className='piecedetails-techniques'>
-                    {techniques[0] ? <dt>Technieken gebruikt bij dit stuk</dt> : ''}
+                    {typeof techniques !== 'undefined' && techniques.length > 0 ? <dt>Technieken gebruikt bij dit stuk</dt> : ''}
                     {techniques ? techniques.map(technique => {
                                     return(
                                         <dd>{technique}</dd>
@@ -69,7 +68,7 @@ function PieceDetails({ objectNumber, webImageUrl, addPieceToView}) {
                             }
                 </dl>
 
-                <p className='piecedetails-places'>{productionPlaces[0] ? `Dit stuk is gemaakt in ${productionPlaces}` : ''}</p>
+                <p className='piecedetails-places'>{typeof productionPlaces !== 'undefined' && productionPlaces.length > 0 ? `Dit stuk is gemaakt in ${productionPlaces}` : ''}</p>
                 <p className='piecedetails-location'>{location ? `Dit stuk is momenteel te zien op  ${location}` : 'Staat momenteel niet ten toon'}</p>
                 {location ? <button className='piecedetails-add-btn' onClick={() => addPieceToView(id, longTitle, location)}>Add Piece</button> : ''}
                 

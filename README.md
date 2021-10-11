@@ -1,76 +1,59 @@
-# Getting Started with Create React App
+# Rijks museum Routeplanner
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a React application that uses the RijksMuseum API.
+Using a dynamic search function the user may look for their favorite art pieces, by name or by artist.
+When the user finds a piece they like, they can click the corresponding card to see more available information.
+This information includes whether or not this piece is currently being displayed in the museum,
+if so the user can add this item to the route planner with a click of the button.
+At the Routeplanner tab, the user can find their selected pieces and their location, sorted in the ideal order.
 
-## Available Scripts
+## Dependencies
 
-In the project directory, you can run:
+**Axios**
+npm install axios
 
-### `npm start`
+Used mainly for it's easy acces to a cancel token, used in the dynamic search to not flood the server.
+Also returns JSON by default, but that's just gravy.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**React Router**
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+npm install react-router-dom
 
-### `npm test`
+React's easy to use way of Linking to other components.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Nice problem solving
 
-### `npm run build`
+### Dynamic search
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+We created a function that looks for a value in the search bar, when nothing is found it sets all relevant state to empty
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    `this.setState({query, results: {}, message: '', totalPages: 0, totalResults: 0})`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+but if a query is found it updates the state with the query and also changes loading to true, 
+this is used to show a loading screen. We then use a callback function to call the fetch function to the first page.
 
-### `npm run eject`
+    `this.setState( { query: query, loading: true, message: '' }, () => {this.fetchSearchResults(1, query)}`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Next we have the fetchSearchresults function, it takes a pagenumber and a query.
+We use this data to figure are the URL we need for the fetching 
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+``` 
+    const API_KEY = 'zZD0atBG'
+    const pageNr = updatedPageNr ? `&p=${updatedPageNr}` : ''
+    const APIUrl = `https://www.rijksmuseum.nl/api/nl/collection?key=${API_KEY}&imgonly=True&ps=30&q=${query}${pageNr}`
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
 ### My notes
 
 Using axios for cancel token, to make sure the search query doesnt get made multiple times while typing so we dont flood the server.
 
-Font Awesome for search logo 
+### Know issues
+
+Why is this slow, the images probably all need to be loaded full resolution every render.
+
+Warning: Each child in a list should have a unique "key" prop.
+
+React Hook useEffect has a missing dependency: 'detailsApi'. Either include it or remove the dependency array
+
+<p className='piecedetails-places'>{typeof productionPlaces !== 'undefined' && productionPlaces.length > 0 ? `Dit stuk is gemaakt in ${productionPlaces}` : ''}</p>

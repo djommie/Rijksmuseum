@@ -3,10 +3,12 @@ import ViewBar from "./ViewBar"
 
 function RoutePlanner( props ) {
 
+    // sort function helper
     const cmp = (a, b) => (a > b) - (a < b)
 
+    // sorts the pieces by the three parameters stored in sortables
     const sortedPieces = props.viewPieces.sort((a, b) => {
-        return cmp(a.sortables[0], b.sortables[0]) || cmp(a.sortables[1], b.sortables[1])
+        return cmp(a.sortables[0], b.sortables[0]) || cmp(a.sortables[1], b.sortables[1]) || cmp(a.sortables[2], b.sortables[2])
       })
 
     const piecesToView = sortedPieces.map((item, index) => {

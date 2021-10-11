@@ -33,6 +33,9 @@ class App extends React.Component {
         this.handlePageClick = this.handlePageClick.bind(this)
     }
     
+    /* Dynamic search functions */
+
+    // fetches data based on query in state and the page that needs to be displayed
     fetchSearchResults = (updatedPageNr, query) => {
         const API_KEY = 'zZD0atBG'
         const pageNr = updatedPageNr ? `&p=${updatedPageNr}` : ''
@@ -74,6 +77,7 @@ class App extends React.Component {
         })
     }
 
+    // Handles typing in the search bar, adds query to state
     handleInputChange = (event) => {
         const query = event.target.value
         if(! query) {
@@ -85,6 +89,7 @@ class App extends React.Component {
         }
     }
 
+    // Handles the click of the prev and next buttons 
     handlePageClick = (type, event) => {
         event.preventDefault()
         const updatePage = 'prev' === type 
@@ -98,12 +103,15 @@ class App extends React.Component {
         }
     }
 
+    // Takes the total number of results and the number of results per page, and returns the number of pages needed
     getPageCount = (total, denom) => {
         const divisable = 0 === total % denom
         const toBeAdded = divisable ? 0 : 1
         return Math.floor(total/denom) + toBeAdded
     }
 
+
+    // Creates Links for every item currently in state
     getPieceSwitchList = (results) => {
         const pieceSwitchList = results.map((result, index) =>{
             return(
@@ -120,6 +128,7 @@ class App extends React.Component {
         return pieceSwitchList
     }
 
+    // Creates an array containing the numbers in the location, later used for sorting
     createSortable = (location) => {
         const sliced = location.slice(3)
         const sortable = sliced.split('.')
@@ -127,6 +136,7 @@ class App extends React.Component {
         return sortables
       }
 
+    // Attached to button in Details screen, adds piece to pieces to be viewed if not already there  
     addPieceToView = (id, longTitle, location) => {
         if (! this.state.viewPiecesIds.includes(id)){
             const sortables = this.createSortable(location)
@@ -148,6 +158,7 @@ class App extends React.Component {
         }
     }
 
+    // Attached to button belonging to an art piece in the route planner, removes the attached piece from pieces to be viewed
     removePieceFromView = (id) => {
         this.setState(prevState => {
             let updatedViewPieces = prevState.viewPieces.filter(viewPiece => viewPiece.id !== id)
