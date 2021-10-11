@@ -110,7 +110,6 @@ class App extends React.Component {
         return Math.floor(total/denom) + toBeAdded
     }
 
-
     // Creates Links for every item currently in state
     getPieceSwitchList = (results) => {
         const pieceSwitchList = results.map((result, index) =>{
