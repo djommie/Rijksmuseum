@@ -7,6 +7,8 @@ This information includes whether or not this piece is currently being displayed
 if so the user can add this item to the route planner with a click of the button.
 At the Routeplanner tab, the user can find their selected pieces and their location, sorted in the ideal order.
 
+This project is currently optimized for 1200px and wider resolutions.
+
 ## Dependencies
 
 ### Axios
