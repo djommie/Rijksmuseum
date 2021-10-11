@@ -172,5 +172,5 @@ React Hook useEffect has a missing dependency: 'detailsApi'. Either include it o
 
 ### ToDo
 
-[] Scaling for different resolutions
-[] Finetune styling
+- [ ] Scaling for different resolutions
+- [ ] Finetune styling
